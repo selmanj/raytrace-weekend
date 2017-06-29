@@ -3,15 +3,17 @@
             [goog.object :as object]))
 
 (defn graphics-hello-world [width height]
-  (vec (for [x (range width)
-             y (range height)]
+  (vec (for [y (range height)
+             x (range width)]
          (let [r (/ x width)
                g (/ (- height (inc y)) height)
                b 0.2]
-           (map #(int (* 255.99 %)) [r g b])))))
+           (into []
+                 (map #(int (* 255.99 %)))
+                 [r g b])))))
 
 (defn add-alpha [ps]
-  (into [] (map #(conj % 255) ps)))
+  (into [] (map #(conj % 255)) ps))
 
 (defn canvas-render [dom-node]
   (let [ctx (.getContext dom-node "2d")
