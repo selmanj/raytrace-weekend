@@ -1,6 +1,7 @@
 (defproject raytrace-weekend "0.0.1-SNAPSHOT"
   :dependencies [[org.clojure/clojure "1.9.0-alpha17"]
-                 [org.clojure/clojurescript "1.9.660"]]
+                 [org.clojure/clojurescript "1.9.660"]
+                 [reagent "0.7.0"]]
   :plugins [[lein-figwheel "0.5.10"]]
   :clean-targets ^{:protect false} [:target-path "out" "resources/public/cljs"]
   :cljsbuild {:builds [{:id "dev"

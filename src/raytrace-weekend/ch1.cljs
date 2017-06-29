@@ -1,3 +1,8 @@
-(ns raytrace-weekend.ch1)
+(ns raytrace-weekend.ch1
+  (:require [reagent.core :as r]))
 
-(defn ^:export mount [] (.log js/console "Hello world."))
+(defn canvas-component []
+  [:div.canvas [:p "Hello world."]])
+
+(defn ^:export mount []
+  (r/render [canvas-component] (js/document.getElementById "ch1-app")))
