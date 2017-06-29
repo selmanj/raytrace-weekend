@@ -1,4 +1,4 @@
 figwheel_server.log
-main.js
 out/
 target/
+resources/public/cljs/
