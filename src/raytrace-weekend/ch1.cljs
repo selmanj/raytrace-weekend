@@ -2,10 +2,26 @@
   (:require [reagent.core :as r]
             [goog.object :as object]))
 
+(defn graphics-hello-world [width height]
+  (vec (for [x (range width)
+             y (range height)]
+         (let [r (/ x width)
+               g (/ (- height (inc y)) height)
+               b 0.2]
+           (map #(int (* 255.99 %)) [r g b])))))
+
+(defn add-alpha [ps]
+  (into [] (map #(conj % 255) ps)))
+
 (defn canvas-render [dom-node]
-  (let [ctx (.getContext dom-node "2d")]
-    (object/set ctx "fillStyle" "green")
-    (.fillRect ctx 10 10 100 100)))
+  (let [ctx (.getContext dom-node "2d")
+        pixel-array (-> (graphics-hello-world 200 100)
+                        add-alpha
+                        flatten
+                        clj->js
+                        js/Uint8ClampedArray.)
+        img-data (js/ImageData. pixel-array 200 100)]
+    (.putImageData ctx img-data 0 0)))
 
 (defn canvas-component []
   (r/create-class
@@ -14,8 +30,8 @@
 
     :reagent-render
     (fn []
-      [:canvas#ch1-canvas {:width 400
-                           :height 200
+      [:canvas#ch1-canvas {:width 200
+                           :height 100
                            :style {:border "1px solid #000000"}}])}))
 
 (defn ^:export mount []
