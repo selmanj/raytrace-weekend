@@ -49,7 +49,7 @@
                            :height 100
                            :style {:border "1px solid #000000"}}])}))
 
-(defn ^:export mount []
+(defn mount []
   "Main entry point."
   (r/render [canvas-component]
             (js/document.getElementById "ch1-app")))

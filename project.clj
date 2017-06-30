@@ -7,7 +7,7 @@
   :clean-targets ^{:protect false} [:target-path "out" "resources/public/cljs"]
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
-                        :figwheel {:on-jsload "raytrace-weekend.ch1/mount"}
+                        :figwheel {:on-jsload "raytrace-weekend.core/mount-from-url"}
                         :compiler {:preloads [devtools.preload]
                                    :main "raytrace-weekend.core"
                                    :asset-path "cljs/out"
