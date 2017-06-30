@@ -18,7 +18,13 @@ You should check the book out if you are at all interested in ray tracing!
 
 ## Running
 
-Instructions coming...
+Launch a local instance to play with by running:
+
+```
+$ lein figwheel
+```
+
+then navigate your browser to http://localhost:3449
 
 ## License
 
