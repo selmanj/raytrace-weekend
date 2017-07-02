@@ -4,6 +4,10 @@
                  [binaryage/devtools "0.9.4"]
                  [reagent "0.7.0"]]
   :plugins [[lein-figwheel "0.5.10"]]
+  :source-paths ["src"]
+  :profiles {:dev {:dependencies [[com.cemerick/piggieback "0.2.2"]
+                                  [figwheel-sidecar "0.5.10"]]}}
+  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
   :clean-targets ^{:protect false} [:target-path "out" "resources/public/cljs"]
   :cljsbuild {:builds [{:id "dev"
                         :source-paths ["src"]
