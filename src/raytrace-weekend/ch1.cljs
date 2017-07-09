@@ -1,6 +1,5 @@
 (ns raytrace-weekend.ch1
-  (:require [reagent.core :as r]
-            [goog.object :as object]))
+  (:require [reagent.core :as r]))
 
 ;; Graphics-related functions
 
