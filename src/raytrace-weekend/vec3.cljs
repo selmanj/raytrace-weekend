@@ -1,13 +1,14 @@
 ;; In the book, Shirley creates a vec3 class. Here instead we spec a vec3 as a simple vector of three components. Note that there's probably no need to restrict these functions to only vectors of size 3, but to keep things close to the book I've left it that way.
 (ns raytrace-weekend.vec3
-  (:refer-clojure :rename {- cljs-
-                           + cljs+
+  (:refer-clojure :rename {+ cljs+
+                           - cljs-
                            * cljs*
-                           / cljsdiv})  ; Can't call it cljs/ as it looks like a namespace
+                           / cljsdiv} ; Can't call it cljs/ as it looks like a namespace
+                  :exclude [+ - * /])
   (:require [clojure.spec.alpha :as s]))
 
 ;; A vec3 is just a vector of 3 numbers
-(s/def ::vec3 (s/coll-of number?
+(s/def ::vec3 (s/coll-of (s/double-in :infinite? false :NaN? false)
                          :kind vector?
                          :count 3))
 
@@ -29,16 +30,16 @@
         [l m n] y]
     [(f i l) (f j m) (f k n)]))
 
-(defn add
-  ([] [0 0 0])
-  ([x] x)
-  ([x y] (map-by-coord cljs+ x y))
-  ([x y & more] (reduce add (add x y) more)))
 (s/fdef add
   :args (s/cat :x    ::vec3
                :y    ::vec3
                :more (s/* ::vec3))
   :ret  ::vec3)
+(defn add
+  ([] [0 0 0])
+  ([x] x)
+  ([x y] (map-by-coord cljs+ x y))
+  ([x y & more] (reduce add (add x y) more)))
 
 (s/fdef sub
   :args (s/cat :x    ::vec3
@@ -112,39 +113,39 @@
 (defn square [x]
   (* x x))
 
+(s/fdef length
+  :args (s/cat :x ::vec3)
+  :ret number?)
 (defn length [x]
   (let [[a b c] x]
     (.sqrt js/Math (+ (square a)
                       (square b)
                       (square c)))))
-(s/fdef length
-  :args (s/cat :x ::vec3)
-  :ret number?)
 
+(s/fdef normalize
+  :args (s/cat :x ::vec3)
+  :ret ::vec3
+  :fn  #(<= (Math/abs (- 1.0 (length (:ret %))))
+            0.0001))                     ; accurate to three decimal places
 (defn normalize [x]
   (let [[a b c] x
         l       (length x)]
     [(/ a l) (/ b l) (/ c l)]))
-(s/fdef normalize
-  :args (s/cat :x ::vec3)
-  :ret ::vec3)
 
-(defn dot [x y]
-  (reduce + 0 (mul x y)))
 (s/fdef dot
   :args (s/cat :x ::vec3
                :y ::vec3)
   :ret number?)
+(defn dot [x y]
+  (reduce + 0 (mul x y)))
 
+(s/fdef cross
+  :args (s/cat :u ::vec3
+               :v ::vec3)
+  :ret ::vec3)
 (defn cross [u v]
   (let [[u1 u2 u3] u
         [v1 v2 v3] v]
     [(- (* u2 v3) (* u3 v2))
      (- (* u3 v1) (* u1 v3))
      (- (* u1 v2) (* u2 v1))]))
-(s/fdef cross
-  :args (s/cat :u ::vec3
-               :v ::vec3)
-  :ret ::vec3)
-
-(cross [0 1 0] [0 0 1])
